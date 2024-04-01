@@ -10,11 +10,11 @@ import matplotlib.pyplot as plt
 
 DATA_DIR = pathlib.Path('Dataset')
 TRAIN_DIR = DATA_DIR / 'Training'
-TEST_DIR = DATA_DIR / 'Testing'
+TEST_DIR = 'Dataset/Testing'
 
 BATCH_SIZE = 16
-IMG_HEIGHT = 512
-IMG_WIDTH = 512
+IMG_HEIGHT = 256
+IMG_WIDTH = 256
 
 train_ds = tf.keras.utils.image_dataset_from_directory(
     TRAIN_DIR,
@@ -34,13 +34,13 @@ model = tf.keras.Sequential([
     network.experimental.preprocessing.RandomFlip('horizontal'),
     network.Rescaling(1.0/255),
 
-    network.Conv2D(32, 5, activation='relu'),                       
+    network.Conv2D(32, 3, activation='relu'),                       
     network.MaxPooling2D(),
-    network.Conv2D(32, 5, activation='relu'),
+    network.Conv2D(32, 3, activation='relu'),
     network.MaxPooling2D(),
-    network.Conv2D(32, 5, activation='relu'),
+    network.Conv2D(32, 3, activation='relu'),
     network.MaxPooling2D(),
-    network.Conv2D(32, 5, activation='relu'),
+    network.Conv2D(32, 3, activation='relu'),
     network.MaxPooling2D(),
     network.Flatten(),
 
@@ -61,15 +61,16 @@ model.compile(
 
 history = model.fit(
     train_ds,
-    validation_data=test_ds,
-    epochs=35
+    # validation_data=test_ds,
+    epochs=25
 )
 
+model.evaluate(test_ds)
 
 model.save('Models/m5.h5')
 
-# m1.h5 -> 97.25%
-# m2.h5 -> 97.79%
-# m3.h5 -> 98.55%
-# m4.h5 -> 97.79%
-# m5.h5 -> 96.49%
+# m1.h5 -> 98.25%
+# m2.h5 -> 97.33%
+# m3.h5 -> 98.47%
+# m4.h5 -> 98.70%
+# m5.h5 -> 98.47%
